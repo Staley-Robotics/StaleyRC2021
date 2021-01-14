@@ -7,9 +7,9 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.MastConstants.mastDeadzone;
 import static frc.robot.Constants.MastConstants.mastMotorPort;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -42,4 +42,16 @@ public class Mast extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+
+  public void runMastTriggers(double leftTrigger, double rightTrigger) {
+    if (leftTrigger > mastDeadzone && leftTrigger > rightTrigger) {
+      runMast(-leftTrigger);
+    } else if (rightTrigger > mastDeadzone && rightTrigger > leftTrigger) {
+      runMast(rightTrigger);
+    } else {
+      runMast(0);
+    }
+  }
+
 }

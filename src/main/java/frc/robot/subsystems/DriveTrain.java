@@ -72,6 +72,7 @@ public class DriveTrain extends SubsystemBase {
   private WPI_VictorSPX rightFollower1;
   private WPI_VictorSPX rightFollower2;
 
+
   private WPI_TalonSRX leftMaster;
   private WPI_VictorSPX leftFollower1;
   private WPI_VictorSPX leftFollower2;
@@ -96,9 +97,11 @@ public class DriveTrain extends SubsystemBase {
       rightMaster = new WPI_TalonSRX(rMotorMasterPort);
       rightFollower1 = new WPI_VictorSPX(rMotorFollower1Port);
       rightFollower2 = new WPI_VictorSPX(rMotorFollower2Port);
+
       leftMaster = new WPI_TalonSRX(lMotorMasterPort);
       leftFollower1 = new WPI_VictorSPX(lMotorFollower1Port);
       leftFollower2 = new WPI_VictorSPX(lMotorFollower2Port);
+
     } catch (RuntimeException ex) {
       DriverStation
           .reportError("Error Instantiating drive motor controllers: " + ex.getMessage(), true);
@@ -121,7 +124,6 @@ public class DriveTrain extends SubsystemBase {
 
     rightMaster.setInverted(false);
     rightFollower1.setInverted(false);
-    rightFollower2.setInverted(false);
 
     leftMaster.setInverted(true);
     leftFollower1.setInverted(true);
@@ -146,7 +148,7 @@ public class DriveTrain extends SubsystemBase {
 
     shifter = new DoubleSolenoid(shifterPorts[0], shifterPorts[1]);
 
-    shifterState = ShifterState.high;
+    shifterState = ShifterState.low;
 
     zeroEncoder();
   }
@@ -162,9 +164,7 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("LeftEncoder(m): ", stepsToMeters(getLeftEncoderPosition()));
     SmartDashboard.putNumber("RightEncoder(m): ", stepsToMeters(getRightEncoderPosition()));
 
-    SmartDashboard.putNumber("Yaw (-180 to 180): ", getHeading());
-
-    SmartDashboard.putString("Piston State", getShifterState().toString());
+    SmartDashboard.putString("Drive Shift", getShifterState().toString());
   }
 
   /**
@@ -184,7 +184,6 @@ public class DriveTrain extends SubsystemBase {
    * x-axis = rotate power.
    */
   public void worldOfTanksDrive(double forward, double backward, double rotate) {
-
 
     backward = backward * speedModifier;
     forward = forward * speedModifier;
@@ -287,6 +286,7 @@ public class DriveTrain extends SubsystemBase {
 
   public int getLeftEncoderVelocity() {
     return leftMaster.getSelectedSensorVelocity();
+
   }
 
   public int getRightEncoderVelocity() {
@@ -345,10 +345,9 @@ public class DriveTrain extends SubsystemBase {
    * Zeros drive encoders.
    */
   public void zeroEncoder() {
-    //TODO: UNDO
-    //rightMaster.setSelectedSensorPosition(0);
-    //leftMaster.setSelectedSensorPosition(0);
-    System.out.println("Encoders have not been zeroed");
+    rightMaster.setSelectedSensorPosition(0);
+    leftMaster.setSelectedSensorPosition(0);
+    System.out.println("Encoders have been zeroed");
   }
 
   /* Odometry */
@@ -391,7 +390,7 @@ public class DriveTrain extends SubsystemBase {
     return new TrajectoryConfig(maxVelocityMetersPerSecond, maxAccelerationMetersPerSecondSquared)
         .setKinematics(kinematics)
         .setStartVelocity(0)
-        .setEndVelocity(0)
+        .setEndVelocity(2)
         .setReversed(isReversed);
   }
 
@@ -465,6 +464,11 @@ public class DriveTrain extends SubsystemBase {
     shifterState = ShifterState.high;
   }
 
+  public void runDriveTrain(double power) {
+    rightMaster.set(power);
+    leftMaster.set(power);
+  }
+
   public ShifterState getShifterState() {
     return shifterState;
   }
@@ -478,7 +482,7 @@ public class DriveTrain extends SubsystemBase {
     } else if (shifterState == ShifterState.low) {
       shiftHigh();
     } else {
-      throw new IllegalStateException("it's okay");
+      throw new IllegalStateException("it's okay, toggle shift machine broke");
     }
   }
 

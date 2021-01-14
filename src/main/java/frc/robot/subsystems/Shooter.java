@@ -24,6 +24,7 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.ArrayList;
 
 /**
  * Two neos spin a single flywheel shooter at incredibly high speed.
@@ -41,10 +42,16 @@ public class Shooter extends SubsystemBase {
   /*These thresholds are used by commands to decide how close the flywheel's velocity
   needs to be to its setpoint before a ball is fed.*/
 
-  //target height and shooter height in meters
   private double targetSpeed;
+  private ArrayList<Double> shootingTargets;
+
+  private void populateShootingTargets() {
+    //TODO: populate shooting targets
+  }
 
   private Shooter() {
+    shootingTargets = new ArrayList<>();
+    populateShootingTargets();
     try {
       leftShooterNeo = new CANSparkMax(leftShooterNeoPort, MotorType.kBrushless);
       rightShooterNeo = new CANSparkMax(rightShooterNeoPort, MotorType.kBrushless);
@@ -112,8 +119,10 @@ public class Shooter extends SubsystemBase {
    * @param surfaceVelocity the speed that the surface of the ball goes in meters per second.
    */
   public void setFlyWheelSpeed(double surfaceVelocity) {
-    targetSpeed = surfaceVelocityToRPM(surfaceVelocity);
-    PIDController.setReference(surfaceVelocityToRPM(surfaceVelocity), ControlType.kVelocity);
+    if (surfaceVelocity != -1) {
+      targetSpeed = surfaceVelocityToRPM(surfaceVelocity);
+      PIDController.setReference(surfaceVelocityToRPM(surfaceVelocity), ControlType.kVelocity);
+    }
   }
 
   /**
@@ -129,8 +138,15 @@ public class Shooter extends SubsystemBase {
    * @param distance distance from the target in inches.
    */
   public double calculateSurfaceVelocity(double distance) {
-    //Lots of commented math I don't want to copy
-    return 25;
+    if (distance == 0) {
+      //m/s bumper on line
+      return 21.7;
+    }
+    int units = (int) distance;
+    if (units > shootingTargets.size() - 1) {
+      units = shootingTargets.size() - 1;
+    }
+    return shootingTargets.get(units);
   }
 
   /**
