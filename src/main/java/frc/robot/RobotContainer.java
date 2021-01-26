@@ -50,6 +50,7 @@ public class RobotContainer {
   private final Vision vision;
 
   private SendableChooser<Command> autoChooser;
+  private SendableChooser<Command> driveChooser;
 
 
   /**
@@ -62,63 +63,53 @@ public class RobotContainer {
     vision = Vision.getInstance();
 
     autoChooser = new SendableChooser<>();
+    driveChooser = new SendableChooser<>();
+
+    Command tankCommand = new RunCommand(
+        () ->
+            drive.tankerMan(
+                -driveController.getY(Hand.kLeft),
+                -driveController.getY(Hand.kRight)
+            ), drive
+    );
+
+    Command stickDrive = new RunCommand(
+        () ->
+            drive.worldOfStick(
+                driveController.getY(Hand.kLeft),
+                driveController.getX(Hand.kLeft)),
+        drive);
+
+    Command joyStickDrive = new RunCommand(
+        () ->
+            drive.worldOfStick(
+                driveStick.getY(Hand.kRight),
+                driveStick.getX(Hand.kRight)
+            ), drive);
+
+    Command worldOfTanks = new RunCommand(
+        () ->
+            drive.worldOfTanksDrive(
+                driveController.getTriggerAxis(GenericHID.Hand.kRight),
+                driveController.getTriggerAxis(GenericHID.Hand.kLeft),
+                driveController.getX(GenericHID.Hand.kLeft)),
+        drive);
+
+    driveChooser.addOption("Tank Drive", tankCommand);
+    driveChooser.addOption("Arcade Drive", stickDrive);
+    driveChooser.addOption("Joystick Drive", joyStickDrive);
+    driveChooser.addOption("World of Tanks", worldOfTanks);
+
 
     SmartDashboard.putData("Auto", autoChooser);
     //All subsystems will have checks that should be checked before going out.
     //check 1: default commands have been set/not set correctly
     //drive check1
 
-    /*
-    drive.setDefaultCommand(
-        new RunCommand(
-            () ->
-                drive.worldOfTanksDrive(
-                    driveController.getTriggerAxis(GenericHID.Hand.kRight),
-                    driveController.getTriggerAxis(GenericHID.Hand.kLeft),
-                    driveController.getX(GenericHID.Hand.kLeft)),
-            drive));
-    */
+    SmartDashboard.putData("Drive", driveChooser);
 
+    drive.setDefaultCommand(driveChooser.getSelected());
 
-    //intake check1
-    //magazine check1
-    //Mast check1
-    //pneumatics check1
-    //shooter check1
-    //vision check1
-    //winch check1
-
-    /*
-    drive.setDefaultCommand(
-        new RunCommand(
-            () ->
-                drive.worldOfStick(
-                    driveController.getY(Hand.kLeft),
-                    driveController.getX(Hand.kLeft)),
-            drive));
-    */
-
-
-    drive.setDefaultCommand(
-        new RunCommand(
-            () ->
-                drive.worldOfStick(
-                    driveStick.getY(Hand.kRight),
-                    driveStick.getX(Hand.kRight)
-                ), drive));
-
-
-    /*
-    drive.setDefaultCommand(
-        new RunCommand(
-            () ->
-                drive.tankerMan(
-                    -driveController.getY(Hand.kLeft),
-                    -driveController.getY(Hand.kRight)
-                ), drive
-        )
-    );
-    */
     configureButtonBindings();
   }
 
