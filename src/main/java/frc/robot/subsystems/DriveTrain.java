@@ -218,6 +218,32 @@ public class DriveTrain extends SubsystemBase {
      */
   }
 
+  public void worldOfStick(double yAxis, double rotate) {
+    yAxis = yAxis * speedModifier;
+
+    //Deadzone copy
+    if (Math.abs(rotate) > rotateDeadzone) {
+      rotate = -rotate * turnSpeedModifier;
+    } else {
+      rotate = 0;
+    }
+
+    if (yAxis < 0) {
+      drive.arcadeDrive(-yAxis,rotate);
+    } else if (yAxis > 0){
+      drive.arcadeDrive(-yAxis,rotate);
+    } else {
+      drive.arcadeDrive(0,rotate);
+    }
+   }
+
+  public void tankerMan (double leftSide, double rightSide) {
+    leftSide = leftSide * speedModifier;
+    rightSide = rightSide * speedModifier;
+
+    drive.tankDrive(leftSide,rightSide);
+   }
+
   /**
    * Takes leftVelocity and rightVelocity to accurately move in auto.
    *
