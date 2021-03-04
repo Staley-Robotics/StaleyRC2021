@@ -122,10 +122,6 @@ public class RobotContainer {
     altController = new XboxController(altControllerPort);
     driveStick = new Joystick(2);
 
-    /* Drive Controller */
-    JoystickButton shiftButton = new JoystickButton(driveController, Button.kB.value);
-    shiftButton.whenPressed(drive::toggleShift, drive);
-
     JoystickButton lineUpShot = new JoystickButton(driveController, Button.kX.value);
     lineUpShot.whileHeld(new VisionYawAlign());
 
