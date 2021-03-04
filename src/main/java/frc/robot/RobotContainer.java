@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.vision.VisionYawAlign;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Vision;
 import frc.robot.util.DPadButton;
 import frc.robot.util.DPadButton.Direction;
@@ -46,7 +45,6 @@ public class RobotContainer {
   private Joystick driveStick;
 
   private final DriveTrain drive;
-  private final Pneumatics pneumatics;
   private final Vision vision;
 
   private SendableChooser<Command> autoChooser;
@@ -59,7 +57,6 @@ public class RobotContainer {
   public RobotContainer() {
 
     drive = DriveTrain.getInstance();
-    pneumatics = Pneumatics.getInstance();
     vision = Vision.getInstance();
 
     autoChooser = new SendableChooser<>();
@@ -107,7 +104,7 @@ public class RobotContainer {
     //drive check1
 
     SmartDashboard.putData("Drive", driveChooser);
-
+    driveChooser.setDefaultOption("Joystick Drive",joyStickDrive);
     drive.setDefaultCommand(driveChooser.getSelected());
 
     configureButtonBindings();
@@ -134,8 +131,6 @@ public class RobotContainer {
 
     /* Alt Controller */
 
-    JoystickButton toggleCompressor = new JoystickButton(altController, Button.kY.value);
-    toggleCompressor.whenPressed(pneumatics::compressorToggle, pneumatics);
   }
 
   /**

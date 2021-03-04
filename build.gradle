@@ -1,6 +1,8 @@
+import edu.wpi.first.gradlerio.GradleRIOPlugin
+
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2020.2.2"
+    id "edu.wpi.first.GradleRIO" version "2021.2.2"
     //id "checkstyle"
     id "idea"
 }/*
@@ -71,17 +73,22 @@ dependencies {
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
-    simulation wpi.deps.sim.gui(wpi.platforms.desktop, false)
+    simulation wpi.deps.sim.driverstation(wpi.platforms.desktop, false)
     compile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
     compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
+
+}
+
+configurations {
+    compile.exclude group: 'edu.wpi.first.thirdparty.frc2020.opencv'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
 // knows where to look for our Robot Class.
 jar {
-    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+    from{ configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
 
 

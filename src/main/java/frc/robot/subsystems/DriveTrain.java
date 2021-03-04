@@ -69,13 +69,13 @@ public class DriveTrain extends SubsystemBase {
   private static DriveTrain instance;
 
   private WPI_TalonSRX rightMaster;
-  private WPI_VictorSPX rightFollower1;
-  private WPI_VictorSPX rightFollower2;
+  //private WPI_VictorSPX rightFollower1;
+  //private WPI_VictorSPX rightFollower2;
 
 
   private WPI_TalonSRX leftMaster;
-  private WPI_VictorSPX leftFollower1;
-  private WPI_VictorSPX leftFollower2;
+  //private WPI_VictorSPX leftFollower1;
+  //private WPI_VictorSPX leftFollower2;
 
   private DifferentialDrive drive;
 
@@ -92,12 +92,12 @@ public class DriveTrain extends SubsystemBase {
   private DriveTrain() {
     try {
       rightMaster = new WPI_TalonSRX(rMotorMasterPort);
-      rightFollower1 = new WPI_VictorSPX(rMotorFollower1Port);
-      rightFollower2 = new WPI_VictorSPX(rMotorFollower2Port);
+      //rightFollower1 = new WPI_VictorSPX(rMotorFollower1Port);
+      //rightFollower2 = new WPI_VictorSPX(rMotorFollower2Port);
 
       leftMaster = new WPI_TalonSRX(lMotorMasterPort);
-      leftFollower1 = new WPI_VictorSPX(lMotorFollower1Port);
-      leftFollower2 = new WPI_VictorSPX(lMotorFollower2Port);
+      //leftFollower1 = new WPI_VictorSPX(lMotorFollower1Port);
+      //leftFollower2 = new WPI_VictorSPX(lMotorFollower2Port);
 
     } catch (RuntimeException ex) {
       DriverStation
@@ -120,17 +120,17 @@ public class DriveTrain extends SubsystemBase {
     leftMaster.setSensorPhase(false);
 
     rightMaster.setInverted(false);
-    rightFollower1.setInverted(false);
+    //rightFollower1.setInverted(false);
 
     leftMaster.setInverted(true);
-    leftFollower1.setInverted(true);
-    leftFollower2.setInverted(true);
+    //leftFollower1.setInverted(true);
+    //leftFollower2.setInverted(true);
 
-    rightFollower1.follow(rightMaster);
-    rightFollower2.follow(rightMaster);
+    //rightFollower1.follow(rightMaster);
+    //rightFollower2.follow(rightMaster);
 
-    leftFollower1.follow(leftMaster);
-    leftFollower2.follow(leftMaster);
+    //leftFollower1.follow(leftMaster);
+    //leftFollower2.follow(leftMaster);
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
     drive.setSafetyEnabled(false);
@@ -174,7 +174,6 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("LeftEncoder(m): ", stepsToMeters(getLeftEncoderPosition()));
     SmartDashboard.putNumber("RightEncoder(m): ", stepsToMeters(getRightEncoderPosition()));
 
-    SmartDashboard.putString("Drive Shift", getShifterState().toString());
     SmartDashboard.putNumber("Turn Target", targetAngle);
   }
 
@@ -489,53 +488,8 @@ public class DriveTrain extends SubsystemBase {
         .andThen(this::stopDrive, this);
   }
 
-  public void shiftLow() {
-    shifter.set(Value.kForward);
-    shifterState = ShifterState.low;
-  }
-
-  public void shiftHigh() {
-    shifter.set(Value.kReverse);
-    shifterState = ShifterState.high;
-  }
-
   public void runDriveTrain(double power) {
     rightMaster.set(power);
     leftMaster.set(power);
-  }
-
-  public ShifterState getShifterState() {
-    return shifterState;
-  }
-
-  /**
-   * Toggles drive shift.
-   */
-  public void toggleShift() {
-    if (shifterState == ShifterState.high) {
-      shiftLow();
-    } else if (shifterState == ShifterState.low) {
-      shiftHigh();
-    } else {
-      throw new IllegalStateException("it's okay, toggle shift machine broke");
-    }
-  }
-
-  // There are 2 more options to test here. Creating a shifting threshold,
-  // so we don't shift when turning
-  // Or, we can automatically shift to high gear when turning
-  private boolean isLowGearOptimal() {
-    if (Math
-        .abs(getLeftEncoderMetersPerSecondVelocity() / getRightEncoderMetersPerSecondVelocity() - 1)
-        > (0.2)) {
-      return false;
-    }
-
-    if (Math.abs(
-        (getLeftEncoderMetersPerSecondVelocity() + getRightEncoderMetersPerSecondVelocity()) / 2)
-        < shiftPointMetersPerSecond) {
-      return true;
-    }
-    return false;
   }
 }
