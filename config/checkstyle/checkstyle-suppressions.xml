@@ -12,7 +12,7 @@
     lines="14"
     message="Missing a Javadoc comment."/>
   <suppress files="AutoBrettV7.java"
-    lines="16"
+    lines="12"
     message="Local variable name 'a_b_MovePastAutoLine' must match pattern"/>
   <suppress files="CentSixBall.java"
     lines="0"
@@ -32,6 +32,12 @@
   <suppress files="DriveTrain"
     lines="159"
     message="Missing a Javadoc comment."/>
+  <suppress files="DriveTrain"
+  lines="221"
+  message="Parameter name 'yAxis' must match pattern '^[a-z]([a-z0-9][a-zA-Z0-9]*)?$'."/>
+  <suppress files="DriveTrain"
+    lines="239"
+    message="Missing a Javadoc comment."
   <suppress files="Intake.java"
     lines="0"
     message="Here's where Intake suppressions go"/>

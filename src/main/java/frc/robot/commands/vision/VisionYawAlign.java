@@ -28,7 +28,8 @@ public class VisionYawAlign extends SequentialCommandGroup {
   public void initialize() {
 
     //Converts Yaw to 180 to -180.
-    angleToTurn = Math.IEEEremainder(-(vision.getYaw() + cameraDegreeError) + driveTrain.getHeading(), 360) * -1;
+    angleToTurn = Math.IEEEremainder(-(vision.getYaw() + cameraDegreeError)
+        + driveTrain.getHeading(), 360) * -1;
 
     addCommands(
         new TurnToAngle(angleToTurn)

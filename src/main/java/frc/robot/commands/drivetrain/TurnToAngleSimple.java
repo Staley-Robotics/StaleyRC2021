@@ -11,6 +11,9 @@ public class TurnToAngleSimple extends CommandBase {
   private double currentAngle;
   private double targetAngle;
 
+  /**
+   * @param displacementAngle
+   */
   public TurnToAngleSimple(double displacementAngle) {
     driveTrain = DriveTrain.getInstance();
     addRequirements(driveTrain);

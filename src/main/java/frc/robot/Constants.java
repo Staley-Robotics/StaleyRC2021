@@ -23,7 +23,7 @@ public final class Constants {
 
   public static final class DriveConstants {
 
-    public static final int rMotorMasterPort = 1;
+    public static final int rMotorMasterPort = 3;
     public static final int rMotorFollower1Port = 6;
     public static final int rMotorFollower2Port = 9;
 
@@ -31,8 +31,8 @@ public final class Constants {
     public static final int lMotorFollower1Port = 10;
     public static final int lMotorFollower2Port = 7;
 
-    public static final double rotateDeadzone = 0.1;
-    public static final double speedModifier = 1;
+    public static final double rotateDeadzone = 0.01;
+    public static final double speedModifier = 0.75;
     public static final double turnSpeedModifier = -0.85;
 
     public static final double kS = 0.702;
@@ -106,9 +106,11 @@ public final class Constants {
     public static final double defaultMagazinePower = 1;
     public static final int magLimitSwitchPort = 9;
   }
-  public static final class VisionConstants{
+
+  public static final class VisionConstants {
     public static final double cameraDegreeError = 1.5;
   }
+
   public static final class MastConstants {
 
     public static final int mastMotorPort = 5;
@@ -129,8 +131,8 @@ public final class Constants {
 
   public static final class OperatorInputConstants {
 
-    public static final int driveControllerPort = 0;
-    public static final int altControllerPort = 1;
+    public static final int driveControllerPort = 1;
+    public static final int altControllerPort = 0;
   }
 
   public static final class PneumaticConstants {
@@ -157,11 +159,7 @@ public final class Constants {
     public static final double cameraHeight = 63.5;
     public static final double fixedCameraAngle = 23.2;
 
-    public static double shooterP = 0.00035;//0.0004
-    public static double shooterI = 0;
-    public static double shooterD = 0.001;
-    public static double shooterF = 0.000175;//0.00015
     public static double trenchShootSpeed = 29;
-    public static double autoLineShootSpeed =30;
+    public static double autoLineShootSpeed = 30;
   }
 }
