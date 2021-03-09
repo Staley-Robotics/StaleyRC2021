@@ -1,9 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.ShooterConstants.cameraHeight;
-import static frc.robot.Constants.ShooterConstants.fixedCameraAngle;
-import static frc.robot.Constants.ShooterConstants.targetHeight;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -33,12 +29,6 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Tape Detected", tapeDetected());
-    if (tapeDetected()) {
-      SmartDashboard.putNumber("Distance", calculateDistance());
-    }
-
   }
 
   /**
@@ -63,19 +53,6 @@ public class Vision extends SubsystemBase {
 
   }
 
-  /**
-   * Calculates distance using trig and a pitch measurement. See https://docs.limelightvision.io/en/latest/cs_estimating_distance.html#using-a-fixed-angle-camera
-   *
-   * @return Calculated Distance.
-   */
-  public double calculateDistance() {
-    if (tapeDetected()) {
-      return (targetHeight - cameraHeight) / (Math
-          .tan(Math.toRadians(getPitch() + fixedCameraAngle)));
-    } else {
-      return 0;
-    }
-  }
 
   /**
    * Gets and returns pitch (up/down angle of displacement) from chameleon vision network table.

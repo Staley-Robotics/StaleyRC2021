@@ -27,7 +27,6 @@ import static frc.robot.Constants.DriveConstants.shiftPointMetersPerSecond;
 import static frc.robot.Constants.DriveConstants.speedModifier;
 import static frc.robot.Constants.DriveConstants.turnSpeedModifier;
 import static frc.robot.Constants.DriveConstants.wheelCircumferenceMeters;
-import static frc.robot.Constants.PneumaticConstants.shifterPorts;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -83,9 +82,6 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDriveOdometry odometry;
   private Pose2d savedPose;
-
-  private DoubleSolenoid shifter;
-  private ShifterState shifterState;
 
   private double targetAngle;
 
@@ -143,17 +139,8 @@ public class DriveTrain extends SubsystemBase {
 
     odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
-    shifter = new DoubleSolenoid(shifterPorts[0], shifterPorts[1]);
-
-    shifterState = ShifterState.low;
-
     targetAngle = getHeading();
     zeroEncoder();
-  }
-
-  private enum ShifterState {
-    low,
-    high
   }
 
   public static DriveTrain getInstance() {

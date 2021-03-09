@@ -75,58 +75,8 @@ public final class Constants {
     public static final double shiftPointMetersPerSecond = 1.5;
   }
 
-  public static final class WinchConstants {
-
-    //inside motor
-    public static final int leftWinchMotorPort = 6;
-    //far motor
-    public static final int rightWinchMotorPort = 7;
-    public static final double winchDefaultMotorPower = 1;
-  }
-
-  public static final class IntakeConstants {
-
-    public static final int intakeMotorPort = 2;
-
-    public static final double defaultIntakePower = 0.75;
-    public static final double defaultMotorJointPower = 0.2;
-    public static final double jointDeadzone = 0.15;
-    public static final int lowerPosition = -2300;
-    public static final int higherPosition = 0;
-
-    public static final double kP = 0.5;//0.03;
-    public static final double kD = 0.00;
-  }
-
-  public static final class MagazineConstants {
-
-    public static final int topMasterPort = 1;
-    public static final int pistonHardStopForwardChannel = 1;
-    public static final int pistonHardStopReverseChannel = 6;
-    public static final double defaultMagazinePower = 1;
-    public static final int magLimitSwitchPort = 9;
-  }
-
   public static final class VisionConstants {
     public static final double cameraDegreeError = 1.5;
-  }
-
-  public static final class MastConstants {
-
-    public static final int mastMotorPort = 5;
-    public static final double mastDefaultMotorPower = 0.5;
-    public static final double mastDeadzone = 0.05;
-    public static final int[] releaseSolenoidPorts = {0, 7};
-    public static final int potPort = 0;
-    public static final double mastP = 0.05;
-    public static final double mastI = 0;
-    public static final double mastD = 0;
-
-    public static final double mastPotTolerance = 0.02;
-    public static final double mastPotVelTolerance = 0.01;
-    public static final double extendoMastPot = 0.4;
-    public static final double retractoMastPot = 0.5;
-
   }
 
   public static final class OperatorInputConstants {
@@ -134,32 +84,18 @@ public final class Constants {
     public static final int driveControllerPort = 1;
     public static final int altControllerPort = 0;
   }
-
-  public static final class PneumaticConstants {
-
-    public static final int compressorPort = 0;
-
-    public static final int[] shifterPorts = {3, 4};
-  }
-
   public static final class ShooterConstants {
 
-    public static final int leftShooterNeoPort = 2;
-    public static final int rightShooterNeoPort = 3;
+    public static final int shooterRightMotorPort = 2;
+    public static final int shooterLeftMotorPort = 3;
+    public static final int turretMotorPort = 1;
 
+    public static double shooterP = 0.00035;//0.0004
+    public static double shooterI = 0;
+    public static double shooterD = 0.001;
+    public static double shooterF = 0.000175;//0.00015
 
-    public static final double flyWheelRadius = 0.0508;
-    public static final double shooterOpenLoopThreshold = 0.5;
-
-    public static final double shooterClosedLoopThreshold = 0.995;
-    public static final double shooterTightClosedLoopThreshold = 0.98;
-
-    //adjust this at comp
-    public static final double targetHeight = 202.565;
-    public static final double cameraHeight = 63.5;
-    public static final double fixedCameraAngle = 23.2;
-
-    public static double trenchShootSpeed = 29;
-    public static double autoLineShootSpeed = 30;
+    public static double shooterSpeed = 750;
+    public static double turretSpeed = 0.25;
   }
 }
