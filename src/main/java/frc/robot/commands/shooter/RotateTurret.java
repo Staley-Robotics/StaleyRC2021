@@ -4,9 +4,11 @@ import static frc.robot.Constants.ShooterConstants.turretSpeed;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 public class RotateTurret extends CommandBase {
   private Shooter shooter;
+  private Vision vision;
   private double speed = turretSpeed;
   private int switches = 0;
 
@@ -31,7 +33,10 @@ public class RotateTurret extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if(switches==2){
+    if(vision.getX()>-0.2 && vision.getX()<0.2){
+      return true;
+    }
+    else if(switches==2){
       return true;
     }
     return false;

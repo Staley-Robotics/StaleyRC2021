@@ -14,10 +14,21 @@ public class Vision extends SubsystemBase {
   private static Vision instance;
 
   private final NetworkTable table;
+  private NetworkTableEntry tx;
+  private NetworkTableEntry ty;
+  private NetworkTableEntry ta;
+  private NetworkTableEntry tv;
+  private double x;
+  private double y;
+  private double area;
+  private double v;
 
   private Vision() {
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    table = inst.getTable("chameleon-vision/Microsoft LifeCam HD-3000");
+    table = NetworkTableInstance.getDefault().getTable("limelight");
+    tv = table.getEntry("tv");
+    tx = table.getEntry("tx");
+    ty = table.getEntry("ty");
+    ta = table.getEntry("ta");
   }
 
   public static Vision getInstance() {
@@ -29,48 +40,19 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // This method will be called once per scheduler run
+    x = tx.getDouble(0.0);
+    y = ty.getDouble(0.0);
+    v = tv.getDouble(0.0);
+    area = ta.getDouble(0.0);
+
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightV", v);
+    SmartDashboard.putNumber("LimelightArea", area);
   }
 
-  /**
-   * If trackTape is true, vision track. If trackTape is false, the camera stream will not be
-   * processed.
-   *
-   * @param trackTape track tape or not
-   */
-  public void setTapeProcessing(final boolean trackTape) {
-    NetworkTableEntry targetProcessing = table.getEntry("driverMode");
-    targetProcessing.setBoolean(trackTape);
-  }
-
-  /**
-   * Check if processing sees a target.
-   *
-   * @return Target detected or not
-   */
-  public boolean tapeDetected() {
-    NetworkTableEntry targetDetected = table.getEntry("isValid");
-    return targetDetected.getBoolean(false);
-
-  }
-
-
-  /**
-   * Gets and returns pitch (up/down angle of displacement) from chameleon vision network table.
-   *
-   * @return Calculated pitch
-   */
-  public double getPitch() {
-    NetworkTableEntry targetPitch = table.getEntry("targetPitch");
-    return targetPitch.getDouble(0.0);
-  }
-
-  /**
-   * Gets and returns yaw (left/right angle of displacement) from chameleon vision network table.
-   *
-   * @return Calculated yaw
-   */
-  public double getYaw() {
-    NetworkTableEntry targetYaw = table.getEntry("targetYaw");
-    return targetYaw.getDouble(0.0);
+  public double getX(){
+    return x;
   }
 }

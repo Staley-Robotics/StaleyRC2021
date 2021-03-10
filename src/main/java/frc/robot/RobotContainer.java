@@ -10,7 +10,6 @@ package frc.robot;
 import static frc.robot.Constants.OperatorInputConstants.altControllerPort;
 import static frc.robot.Constants.OperatorInputConstants.driveControllerPort;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
@@ -19,18 +18,14 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.shooter.ResetTurret;
 import frc.robot.commands.shooter.RotateTurret;
 import frc.robot.commands.shooter.ShootBallsSimple;
-import frc.robot.commands.vision.VisionYawAlign;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.DPadButton;
-import frc.robot.util.DPadButton.Direction;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
