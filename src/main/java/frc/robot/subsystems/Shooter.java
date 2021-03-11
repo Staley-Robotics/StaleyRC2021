@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.DriveConstants.kD;
+import static frc.robot.Constants.DriveConstants.kP;
 import static frc.robot.Constants.ShooterConstants.shooterD;
 import static frc.robot.Constants.ShooterConstants.shooterF;
 import static frc.robot.Constants.ShooterConstants.shooterI;
@@ -8,6 +10,8 @@ import static frc.robot.Constants.ShooterConstants.shooterRightMotorPort;
 import static frc.robot.Constants.ShooterConstants.shooterLeftMotorPort;
 import static frc.robot.Constants.ShooterConstants.turretMotorPort;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -48,6 +52,16 @@ public class Shooter extends SubsystemBase{
     shooterRightMotor.setInverted(true);
     shooterRightMotor.setIdleMode(IdleMode.kCoast);
 
+    TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
+    talonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+    talonConfig.slot0.kP = kP;
+    talonConfig.neutralDeadband = 0.0;
+    talonConfig.slot0.kI = 0.0;
+    talonConfig.slot0.kD = kD;
+    talonConfig.slot0.integralZone = 400;
+    talonConfig.slot0.closedLoopPeakOutput = 1.0;
+
+    turretMotor.configAllSettings(talonConfig);
     shooterEncoder = shooterRightMotor.getEncoder();
     shooterPID = shooterRightMotor.getPIDController();
     shooterPID.setFeedbackDevice(shooterEncoder);
