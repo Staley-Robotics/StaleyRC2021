@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.shooter.CenterTurret;
 import frc.robot.commands.shooter.ResetTurret;
 import frc.robot.commands.shooter.RotateTurret;
 import frc.robot.commands.shooter.ShootBallsSimple;
@@ -129,7 +130,8 @@ public class RobotContainer {
     JoystickButton resetTurret = new JoystickButton(altController, Button.kY.value);
     resetTurret.whenPressed(new ResetTurret());
 
-
+    JoystickButton centerTarget = new JoystickButton(altController, Button.kX.value);
+    centerTarget.whenPressed(new CenterTurret());
 
   }
 

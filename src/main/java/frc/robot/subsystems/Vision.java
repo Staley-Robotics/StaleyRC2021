@@ -55,4 +55,8 @@ public class Vision extends SubsystemBase {
   public double getX(){
     return x;
   }
+
+  public double getV(){
+    return v;
+  }
 }
