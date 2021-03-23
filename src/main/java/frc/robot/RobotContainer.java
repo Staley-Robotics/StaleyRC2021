@@ -25,8 +25,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.shooter.ResetTurret;
 import frc.robot.commands.shooter.RotateTurret;
 import frc.robot.commands.shooter.ShootBallsSimple;
-import frc.robot.commands.vision.VisionYawAlign;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Shooter;
 import frc.robot.util.DPadButton;
@@ -44,7 +42,7 @@ public class RobotContainer {
   private XboxController altController;
   private Joystick driveStick;
 
-  private final DriveTrain drive;
+  //private final DriveTrain drive;
   private final Vision vision;
   private final Shooter shooter;
 
@@ -57,13 +55,13 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    drive = DriveTrain.getInstance();
+    //drive = DriveTrain.getInstance();
     vision = Vision.getInstance();
     shooter = Shooter.getInstance();
 
     autoChooser = new SendableChooser<>();
     driveChooser = new SendableChooser<>();
-
+    /*
     Command tankCommand = new RunCommand(
         () ->
             drive.tankerMan(
@@ -98,7 +96,7 @@ public class RobotContainer {
     driveChooser.addOption("Arcade Drive", stickDrive);
     driveChooser.addOption("Joystick Drive", joyStickDrive);
     driveChooser.addOption("World of Tanks", worldOfTanks);
-
+    */
 
     SmartDashboard.putData("Auto", autoChooser);
     //All subsystems will have checks that should be checked before going out.
@@ -106,8 +104,8 @@ public class RobotContainer {
     //drive check1
 
     SmartDashboard.putData("Drive", driveChooser);
-    driveChooser.setDefaultOption("Joystick Drive",joyStickDrive);
-    drive.setDefaultCommand(driveChooser.getSelected());
+    //driveChooser.setDefaultOption("Joystick Drive",joyStickDrive);
+    //drive.setDefaultCommand(driveChooser.getSelected());
 
     configureButtonBindings();
   }
@@ -129,7 +127,7 @@ public class RobotContainer {
     simpleShoot.whileHeld(new ShootBallsSimple());
 
     JoystickButton rotateTurret = new JoystickButton(altController, Button.kB.value);
-    rotateTurret.whenPressed(new RotateTurret());
+    rotateTurret.whileHeld(new RotateTurret());
 
     JoystickButton resetTurret = new JoystickButton(altController, Button.kY.value);
     resetTurret.whenPressed(new ResetTurret());

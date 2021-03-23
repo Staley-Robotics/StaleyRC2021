@@ -81,8 +81,8 @@ public final class Constants {
 
   public static final class OperatorInputConstants {
 
-    public static final int driveControllerPort = 1;
-    public static final int altControllerPort = 0;
+    public static final int driveControllerPort = 0;
+    public static final int altControllerPort = 1;
   }
   public static final class ShooterConstants {
 
@@ -95,7 +95,7 @@ public final class Constants {
     public static double shooterD = 0.001;
     public static double shooterF = 0.000175;//0.00015
 
-    public static double shooterSpeed = 750;
+    public static double shooterSpeed = 304.7228;
     public static double turretSpeed = 0.25;
   }
 }

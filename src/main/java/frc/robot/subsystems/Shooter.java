@@ -47,9 +47,9 @@ public class Shooter extends SubsystemBase{
     }
     shooterLeftMotor.follow(shooterRightMotor, true);
     shooterLeftMotor.setIdleMode(IdleMode.kCoast);
-    shooterLeftMotor.setInverted(false);
+    shooterLeftMotor.setInverted(true);
 
-    shooterRightMotor.setInverted(true);
+    shooterRightMotor.setInverted(false);
     shooterRightMotor.setIdleMode(IdleMode.kCoast);
 
     TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
