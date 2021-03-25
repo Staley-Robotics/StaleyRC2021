@@ -12,13 +12,11 @@ import static frc.robot.Constants.DriveConstants.feedForward;
 import static frc.robot.Constants.DriveConstants.kD;
 import static frc.robot.Constants.DriveConstants.kP;
 import static frc.robot.Constants.DriveConstants.kinematics;
-import static frc.robot.Constants.DriveConstants.lMotorFollower1Port;
-import static frc.robot.Constants.DriveConstants.lMotorFollower2Port;
+import static frc.robot.Constants.DriveConstants.lMotorFollowerPort;
 import static frc.robot.Constants.DriveConstants.lMotorMasterPort;
 import static frc.robot.Constants.DriveConstants.maxAccelerationMetersPerSecondSquared;
 import static frc.robot.Constants.DriveConstants.maxVelocityMetersPerSecond;
-import static frc.robot.Constants.DriveConstants.rMotorFollower1Port;
-import static frc.robot.Constants.DriveConstants.rMotorFollower2Port;
+import static frc.robot.Constants.DriveConstants.rMotorFollowerPort;
 import static frc.robot.Constants.DriveConstants.rMotorMasterPort;
 import static frc.robot.Constants.DriveConstants.ramseteB;
 import static frc.robot.Constants.DriveConstants.ramseteZ;
@@ -32,7 +30,9 @@ import static frc.robot.Constants.PneumaticConstants.shifterPorts;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -68,14 +68,12 @@ public class DriveTrain extends SubsystemBase {
 
   private static DriveTrain instance;
 
-  private WPI_TalonSRX rightMaster;
-  //private WPI_VictorSPX rightFollower1;
-  //private WPI_VictorSPX rightFollower2;
+  private WPI_TalonFX rightMaster;
+  private WPI_TalonFX rightFollower;
 
 
-  private WPI_TalonSRX leftMaster;
-  //private WPI_VictorSPX leftFollower1;
-  //private WPI_VictorSPX leftFollower2;
+  private WPI_TalonFX leftMaster;
+  private WPI_TalonFX leftFollower;
 
   private DifferentialDrive drive;
 
@@ -91,20 +89,18 @@ public class DriveTrain extends SubsystemBase {
 
   private DriveTrain() {
     try {
-      rightMaster = new WPI_TalonSRX(rMotorMasterPort);
-      //rightFollower1 = new WPI_VictorSPX(rMotorFollower1Port);
-      //rightFollower2 = new WPI_VictorSPX(rMotorFollower2Port);
+      rightMaster = new WPI_TalonFX(rMotorMasterPort);
+      rightFollower = new WPI_TalonFX(rMotorFollowerPort);
 
-      leftMaster = new WPI_TalonSRX(lMotorMasterPort);
-      //leftFollower1 = new WPI_VictorSPX(lMotorFollower1Port);
-      //leftFollower2 = new WPI_VictorSPX(lMotorFollower2Port);
+      leftMaster = new WPI_TalonFX(lMotorMasterPort);
+      leftFollower = new WPI_TalonFX(lMotorFollowerPort);
 
     } catch (RuntimeException ex) {
       DriverStation
           .reportError("Error Instantiating drive motor controllers: " + ex.getMessage(), true);
     }
 
-    TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
+    TalonFXConfiguration talonConfig = new TalonFXConfiguration();
     talonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
     talonConfig.slot0.kP = kP;
     talonConfig.neutralDeadband = 0.0;
@@ -114,23 +110,22 @@ public class DriveTrain extends SubsystemBase {
     talonConfig.slot0.closedLoopPeakOutput = 1.0;
 
     rightMaster.configAllSettings(talonConfig);
+    rightFollower.configAllSettings(talonConfig);
     leftMaster.configAllSettings(talonConfig);
+    leftFollower.configAllSettings(talonConfig);
 
     rightMaster.setSensorPhase(false);
     leftMaster.setSensorPhase(false);
 
-    rightMaster.setInverted(false);
-    //rightFollower1.setInverted(false);
+    rightMaster.setInverted(true);
+    rightFollower.setInverted(true);
 
-    leftMaster.setInverted(true);
-    //leftFollower1.setInverted(true);
-    //leftFollower2.setInverted(true);
+    leftMaster.setInverted(false);
+    leftFollower.setInverted(false);
 
-    //rightFollower1.follow(rightMaster);
-    //rightFollower2.follow(rightMaster);
+    rightFollower.follow(rightMaster);
 
-    //leftFollower1.follow(leftMaster);
-    //leftFollower2.follow(leftMaster);
+    leftFollower.follow(leftMaster);
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
     drive.setSafetyEnabled(false);
