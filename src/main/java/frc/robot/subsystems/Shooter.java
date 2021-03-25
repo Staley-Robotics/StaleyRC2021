@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.DriveConstants.kD;
+import static frc.robot.Constants.DriveConstants.kP;
 import static frc.robot.Constants.ShooterConstants.shooterD;
 import static frc.robot.Constants.ShooterConstants.shooterF;
 import static frc.robot.Constants.ShooterConstants.shooterI;
@@ -8,6 +10,8 @@ import static frc.robot.Constants.ShooterConstants.shooterRightMotorPort;
 import static frc.robot.Constants.ShooterConstants.shooterLeftMotorPort;
 import static frc.robot.Constants.ShooterConstants.turretMotorPort;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -41,15 +45,25 @@ public class Shooter extends SubsystemBase{
       DriverStation
           .reportError("Error Instantiating Shooter Motor Controllers: " + ex.getMessage(), true);
     }
-    shooterLeftMotor.follow(shooterRightMotor, true);
+    shooterRightMotor.follow(shooterLeftMotor, true);
     shooterLeftMotor.setIdleMode(IdleMode.kCoast);
     shooterLeftMotor.setInverted(false);
 
     shooterRightMotor.setInverted(true);
     shooterRightMotor.setIdleMode(IdleMode.kCoast);
 
-    shooterEncoder = shooterRightMotor.getEncoder();
-    shooterPID = shooterRightMotor.getPIDController();
+    TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
+    talonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+    talonConfig.slot0.kP = kP;
+    talonConfig.neutralDeadband = 0.0;
+    talonConfig.slot0.kI = 0.0;
+    talonConfig.slot0.kD = kD;
+    talonConfig.slot0.integralZone = 400;
+    talonConfig.slot0.closedLoopPeakOutput = 1.0;
+
+    turretMotor.configAllSettings(talonConfig);
+    shooterEncoder = shooterLeftMotor.getEncoder();
+    shooterPID = shooterLeftMotor.getPIDController();
     shooterPID.setFeedbackDevice(shooterEncoder);
 
     updateShooterPID();
@@ -86,4 +100,5 @@ public class Shooter extends SubsystemBase{
   public void spinTurret(double speed){
     turretMotor.set(speed);
   }
+
 }

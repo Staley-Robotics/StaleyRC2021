@@ -21,7 +21,7 @@ public class ResetTurret extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if(shooter.getTurretMotorPosition() == 0){
+   if(shooter.getTurretMotorPosition() == 0){
       return true;
     }
 
