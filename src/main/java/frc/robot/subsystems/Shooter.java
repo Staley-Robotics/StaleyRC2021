@@ -45,11 +45,11 @@ public class Shooter extends SubsystemBase{
       DriverStation
           .reportError("Error Instantiating Shooter Motor Controllers: " + ex.getMessage(), true);
     }
-    shooterLeftMotor.follow(shooterRightMotor, true);
+    shooterRightMotor.follow(shooterLeftMotor, true);
     shooterLeftMotor.setIdleMode(IdleMode.kCoast);
-    shooterLeftMotor.setInverted(true);
+    shooterLeftMotor.setInverted(false);
 
-    shooterRightMotor.setInverted(false);
+    shooterRightMotor.setInverted(true);
     shooterRightMotor.setIdleMode(IdleMode.kCoast);
 
     TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
@@ -62,8 +62,8 @@ public class Shooter extends SubsystemBase{
     talonConfig.slot0.closedLoopPeakOutput = 1.0;
 
     turretMotor.configAllSettings(talonConfig);
-    shooterEncoder = shooterRightMotor.getEncoder();
-    shooterPID = shooterRightMotor.getPIDController();
+    shooterEncoder = shooterLeftMotor.getEncoder();
+    shooterPID = shooterLeftMotor.getPIDController();
     shooterPID.setFeedbackDevice(shooterEncoder);
 
     updateShooterPID();
@@ -100,4 +100,5 @@ public class Shooter extends SubsystemBase{
   public void spinTurret(double speed){
     turretMotor.set(speed);
   }
+
 }
