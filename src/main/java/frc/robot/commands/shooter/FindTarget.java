@@ -8,7 +8,7 @@ public class FindTarget extends SequentialCommandGroup {
 
     addCommands(
         new RotateTurret(),
-        new FindTarget());
+        new CenterTurret());
   }
 
 }

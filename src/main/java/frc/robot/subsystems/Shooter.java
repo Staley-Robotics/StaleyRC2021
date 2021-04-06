@@ -5,10 +5,12 @@ import static frc.robot.Constants.DriveConstants.kP;
 import static frc.robot.Constants.ShooterConstants.shooterD;
 import static frc.robot.Constants.ShooterConstants.shooterF;
 import static frc.robot.Constants.ShooterConstants.shooterI;
+import static frc.robot.Constants.ShooterConstants.shooterIntakeMotorPort;
 import static frc.robot.Constants.ShooterConstants.shooterP;
 import static frc.robot.Constants.ShooterConstants.shooterRightMotorPort;
 import static frc.robot.Constants.ShooterConstants.shooterLeftMotorPort;
 import static frc.robot.Constants.ShooterConstants.turretMotorPort;
+import static frc.robot.Constants.ShooterConstants.turretSpeed;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
@@ -20,6 +22,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase{
@@ -30,6 +33,7 @@ public class Shooter extends SubsystemBase{
 
   private CANSparkMax shooterRightMotor;
   private CANSparkMax shooterLeftMotor;
+  private VictorSP intakeMotor;
 
   private CANEncoder shooterEncoder;
   private CANPIDController shooterPID;
@@ -41,6 +45,7 @@ public class Shooter extends SubsystemBase{
       shooterRightMotor = new CANSparkMax(shooterRightMotorPort, MotorType.kBrushless);
       shooterLeftMotor = new CANSparkMax(shooterLeftMotorPort, MotorType.kBrushless);
       turretMotor = new WPI_TalonSRX(turretMotorPort);
+      intakeMotor = new VictorSP(shooterIntakeMotorPort);
     } catch (RuntimeException ex) {
       DriverStation
           .reportError("Error Instantiating Shooter Motor Controllers: " + ex.getMessage(), true);
@@ -99,6 +104,30 @@ public class Shooter extends SubsystemBase{
 
   public void spinTurret(double speed){
     turretMotor.set(speed);
+  }
+
+  public void runShooterIntake(double speed){
+    intakeMotor.set(speed);
+  }
+
+  public boolean checkPosition(double encounterMark){
+    if(getTurretMotorPosition()==encounterMark){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  public void spinToAngle(double encounterMark){
+    if(!checkPosition(encounterMark)){
+      if(encounterMark>=0){
+        spinTurret(turretSpeed);
+      }else {
+        spinTurret(-turretSpeed);
+      }
+    }else{
+      spinTurret(00);
+    }
   }
 
 }

@@ -21,8 +21,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.shooter.CenterTurret;
+import frc.robot.commands.shooter.FindTarget;
 import frc.robot.commands.shooter.ResetTurret;
 import frc.robot.commands.shooter.RotateTurret;
+import frc.robot.commands.shooter.RunShooterFull;
 import frc.robot.commands.shooter.ShootBallsSimple;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
@@ -123,14 +125,14 @@ public class RobotContainer {
     JoystickButton simpleShoot = new JoystickButton(altController, Button.kA.value);
     simpleShoot.whileHeld(new ShootBallsSimple());
 
-    JoystickButton rotateTurret = new JoystickButton(altController, Button.kB.value);
-    rotateTurret.whileHeld(new RotateTurret());
+    JoystickButton findTarget = new JoystickButton(altController, Button.kB.value);
+    findTarget.whileHeld(new FindTarget());
 
     JoystickButton resetTurret = new JoystickButton(altController, Button.kY.value);
     resetTurret.whenPressed(new ResetTurret());
 
-    JoystickButton centerTarget = new JoystickButton(altController, Button.kX.value);
-    centerTarget.whenPressed(new CenterTurret());
+    JoystickButton runShooterFull = new JoystickButton(altController, Button.kX.value);
+    runShooterFull.whenHeld(new RunShooterFull());
 
   }
 

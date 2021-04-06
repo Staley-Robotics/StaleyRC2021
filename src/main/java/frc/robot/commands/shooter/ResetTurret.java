@@ -1,7 +1,5 @@
 package frc.robot.commands.shooter;
 
-import static frc.robot.Constants.ShooterConstants.turretSpeed;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -15,16 +13,15 @@ public class ResetTurret extends CommandBase {
 
   @Override
   public void execute() {
-    shooter.spinTurret(turretSpeed);
+    shooter.spinToAngle(00);
 
   }
 
   @Override
   public boolean isFinished() {
-   if(shooter.getTurretMotorPosition() == 0){
+   if(shooter.checkPosition(00)){
       return true;
     }
-
     return false;
     }
 

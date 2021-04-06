@@ -21,9 +21,9 @@ public class CenterTurret extends CommandBase {
   @Override
   public void initialize(){
    if (vision.getX()>0){
-     speed /= -2;
+     speed /= -4;
    }else{
-     speed /= 2;
+     speed /= 4;
    }
   }
 
