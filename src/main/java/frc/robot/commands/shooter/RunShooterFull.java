@@ -11,6 +11,7 @@ public class RunShooterFull extends ParallelRaceGroup {
 
     shooter = Shooter.getInstance();
 
+    //Takes the shooter and intake (with pauses) commands and runs them at the same time
     addCommands(
 
         new ShootBallsSimple(),

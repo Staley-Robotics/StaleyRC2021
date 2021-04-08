@@ -15,6 +15,7 @@ public class RunShooterIntakeTimed extends ParallelRaceGroup {
 
     shooter = Shooter.getInstance();
 
+    //Sets the command up so the intake runs with 2 second pauses
     addCommands(
 
         new RunCommand(()->shooter.runShooterIntake(shooterIntakeSpeed), shooter),
