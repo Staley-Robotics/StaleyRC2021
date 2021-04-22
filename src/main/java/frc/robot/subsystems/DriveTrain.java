@@ -77,14 +77,6 @@ public class DriveTrain extends SubsystemBase {
 
   private DifferentialDrive drive;
 
-  private AHRS gyro;
-
-  private final DifferentialDriveOdometry odometry;
-  private Pose2d savedPose;
-
-  private DoubleSolenoid shifter;
-  private ShifterState shifterState;
-
   private double targetAngle;
 
   private DriveTrain() {
@@ -130,25 +122,8 @@ public class DriveTrain extends SubsystemBase {
     drive = new DifferentialDrive(leftMaster, rightMaster);
     drive.setSafetyEnabled(false);
     drive.setRightSideInverted(false);
-    try {
-      gyro = new AHRS();
-    } catch (RuntimeException ex) {
-      DriverStation.reportError("Error Instantiating Gyro: " + ex.getMessage(), true);
-    }
 
-    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
-
-    shifter = new DoubleSolenoid(shifterPorts[0], shifterPorts[1]);
-
-    shifterState = ShifterState.low;
-
-    targetAngle = getHeading();
     zeroEncoder();
-  }
-
-  private enum ShifterState {
-    low,
-    high
   }
 
   public static DriveTrain getInstance() {
@@ -156,20 +131,6 @@ public class DriveTrain extends SubsystemBase {
       instance = new DriveTrain();
     }
     return instance;
-  }
-
-  @Override
-  public void periodic() {
-    odometry.update(Rotation2d.fromDegrees(getHeading()), stepsToMeters(getLeftEncoderPosition()),
-        stepsToMeters(getRightEncoderPosition()));
-
-    SmartDashboard.putNumber("Gyro Yaw", getYaw());
-    SmartDashboard.putNumber("Gyro Pitch", getPitch());
-
-    SmartDashboard.putNumber("LeftEncoder(m): ", stepsToMeters(getLeftEncoderPosition()));
-    SmartDashboard.putNumber("RightEncoder(m): ", stepsToMeters(getRightEncoderPosition()));
-
-    SmartDashboard.putNumber("Turn Target", targetAngle);
   }
 
   /* Drive Code */
@@ -199,17 +160,6 @@ public class DriveTrain extends SubsystemBase {
     } else {
       drive.arcadeDrive(0, rotate);
     }
-    /* autoshift testing
-    if (isLowGearOptimal()) {
-      if (shifterState == ShifterState.high) {
-        shiftLow();
-      }
-    } else {
-      if (shifterState == ShifterState.low) {
-        shiftHigh();
-      }
-    }
-     */
   }
 
   public void worldOfStick(double yAxis, double rotate) {
@@ -238,62 +188,10 @@ public class DriveTrain extends SubsystemBase {
     drive.tankDrive(leftSide,rightSide);
    }
 
-  /**
-   * Takes leftVelocity and rightVelocity to accurately move in auto.
-   *
-   * @param leftVelocity  Motor's left Velocity
-   * @param rightVelocity Motor's Right Velocity
-   */
-  public void tankDriveVelocity(double leftVelocity, double rightVelocity) {
-    var leftAccel =
-        (leftVelocity - stepsPerDecisecToMetersPerSec(getLeftEncoderVelocity())) / .2;
-    var rightAccel =
-        (rightVelocity - stepsPerDecisecToMetersPerSec(getRightEncoderVelocity())) / .2;
-
-    var leftFeedForwardVolts = feedForward.calculate(leftVelocity, leftAccel);
-    var rightFeedForwardVolts = feedForward.calculate(rightVelocity, rightAccel);
-
-    leftMaster.set(
-        ControlMode.Velocity,
-        metersPerSecToStepsPerDecisec(leftVelocity),
-        DemandType.ArbitraryFeedForward,
-        leftFeedForwardVolts / 12);
-    rightMaster.set(
-        ControlMode.Velocity,
-        metersPerSecToStepsPerDecisec(rightVelocity),
-        DemandType.ArbitraryFeedForward,
-        rightFeedForwardVolts / 12);
-
-    drive.feed();
-  }
-
   public void stopDrive() {
     drive.arcadeDrive(0, 0);
   }
 
-  /* Gyro */
-
-  /**
-   * Gets Yaw. Yaw is the angle which the robot turns.
-   *
-   * @return double
-   */
-  public double getYaw() {
-    return gyro.getYaw();
-  }
-
-  /**
-   * Gets Pitch. Pitch is the angle which the robot is oriented among the z axis.
-   *
-   * @return double
-   */
-  public double getPitch() {
-    return gyro.getPitch();
-  }
-
-  public void zeroYaw() {
-    gyro.zeroYaw();
-  }
 
   /* Encoder */
 
@@ -314,58 +212,6 @@ public class DriveTrain extends SubsystemBase {
     return rightMaster.getSelectedSensorVelocity();
   }
 
-  public double getLeftEncoderMetersPerSecondVelocity() {
-    return stepsPerDecisecToMetersPerSec(getLeftEncoderVelocity());
-  }
-
-  public double getRightEncoderMetersPerSecondVelocity() {
-    return stepsPerDecisecToMetersPerSec(getRightEncoderVelocity());
-  }
-
-  public void setTargetAngle(double angle) {
-    this.targetAngle = angle;
-  }
-
-  /**
-   * Converts encoder values to meters.
-   *
-   * @param steps Encoder values.
-   * @return Converted value.
-   */
-  public static double stepsToMeters(int steps) {
-    return (wheelCircumferenceMeters / countPerRevolution) * steps;
-  }
-
-  /**
-   * Converts encoder velocity to meters per second.
-   *
-   * @param stepsPerDecisec Encoder readings in Deciseconds.
-   * @return Converted value.
-   */
-  public static double stepsPerDecisecToMetersPerSec(int stepsPerDecisec) {
-    return stepsToMeters(stepsPerDecisec * 10);
-  }
-
-  /**
-   * Converts meters to standard encoder values.
-   *
-   * @param meters Meters travelled.
-   * @return Converted value.
-   */
-  public static double metersToSteps(double meters) {
-    return (meters / wheelCircumferenceMeters) * countPerRevolution;
-  }
-
-  /**
-   * Conversion back to Deciseconds.
-   *
-   * @param metersPerSec Encoder readings in seconds.
-   * @return Converted value.
-   */
-  public static double metersPerSecToStepsPerDecisec(double metersPerSec) {
-    return metersToSteps(metersPerSec) * .1d;
-  }
-
   /**
    * Zeros drive encoders.
    */
@@ -373,114 +219,6 @@ public class DriveTrain extends SubsystemBase {
     rightMaster.setSelectedSensorPosition(0);
     leftMaster.setSelectedSensorPosition(0);
     System.out.println("Encoders have been zeroed");
-  }
-
-  /* Odometry */
-
-  /**
-   * See {@Pose2d}.
-   *
-   * @return Current Pose of the robot.
-   */
-  public Pose2d getPose() {
-    return odometry.getPoseMeters();
-  }
-
-  /**
-   * Ben has acquired genius tier.
-   *
-   * @return Converts Yaw to 180 to -180.
-   */
-  public double getHeading() {
-    return Math.IEEEremainder(getYaw(), 360) * -1;
-  }
-
-  public double getNegativeHeading() {
-    return getHeading() * -1;
-  }
-
-  /**
-   * Sets the robot's current position as the origin.
-   */
-  public void resetOdometry() {
-    savedPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
-    odometry.resetPosition(savedPose, Rotation2d.fromDegrees(getHeading()));
-  }
-
-  /* Trajectory */
-
-  /**
-   * Gets a TrajectoryConfig.
-   *
-   * @param isReversed Determines if the bot goes backwards or forwards during a trajectory.
-   * @return Trajectory Configuration.
-   */
-  public TrajectoryConfig createTrajectoryConfig(boolean isReversed) {
-    return new TrajectoryConfig(maxVelocityMetersPerSecond, maxAccelerationMetersPerSecondSquared)
-        .setKinematics(kinematics)
-        .setStartVelocity(0)
-        .setEndVelocity(2)
-        .setReversed(isReversed);
-  }
-
-  /**
-   * Replicates data from Pathweaver produced JSON file so that we can input our own Trajectory
-   * Configuration.
-   *
-   * @param trajectoryName Name of Trajectory
-   * @return List of Pose2d objects
-   */
-  public List<Pose2d> getPoseListFromPathWeaverJson(String trajectoryName) {
-    ArrayList<Pose2d> poseList = new ArrayList<>();
-    InputStream fis;
-    JsonReader reader;
-    JsonArray wholeFile = null;
-    try {
-      String trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(
-          Paths.get("output", trajectoryName + ".wpilib.json")).toString();
-
-      fis = new FileInputStream(trajectoryPath);
-
-      reader = Json.createReader(fis);
-
-      wholeFile = reader.readArray();
-
-      reader.close();
-    } catch (IOException e) {
-      System.out.println("CATCH RAN");
-      e.printStackTrace();
-    }
-
-    for (JsonObject state : wholeFile.getValuesAs(JsonObject.class)) {
-      JsonObject pose = state.getJsonObject("pose");
-      JsonObject translation = pose.getJsonObject("translation");
-      JsonObject rotation = pose.getJsonObject("rotation");
-
-      double x = translation.getJsonNumber("x").doubleValue();
-      double y = translation.getJsonNumber("y").doubleValue();
-      double radians = rotation.getJsonNumber("radians").doubleValue();
-
-      poseList.add(new Pose2d(x, y, new Rotation2d(radians)));
-    }
-    return poseList;
-  }
-
-  /**
-   * Creates a command using trajectory that drives the robot during autonomous.
-   *
-   * @param trajectory A combination of pose and speed.
-   * @return Auto command with given pose.
-   */
-  public Command getAutonomousCommandFromTrajectory(Trajectory trajectory) {
-    return new InstantCommand()
-        .andThen(new RamseteCommand(
-            trajectory,
-            this::getPose,
-            new RamseteController(ramseteB, ramseteZ),
-            kinematics,
-            this::tankDriveVelocity,
-            this))
-        .andThen(this::stopDrive, this);
   }
 
   public void runDriveTrain(double power) {
