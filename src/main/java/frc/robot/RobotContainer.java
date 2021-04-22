@@ -65,14 +65,14 @@ public class RobotContainer {
                 driveController.getY(Hand.kLeft),
                 driveController.getX(Hand.kLeft)),
         drive);
-
+    /*
     Command joyStickDrive = new RunCommand(
         () ->
             drive.worldOfStick(
                 driveStick.getY(Hand.kRight),
                 driveStick.getX(Hand.kRight)
             ), drive);
-
+    */
     Command worldOfTanks = new RunCommand(
         () ->
             drive.worldOfTanksDrive(
@@ -83,7 +83,7 @@ public class RobotContainer {
 
     driveChooser.addOption("Tank Drive", tankCommand);
     driveChooser.addOption("Arcade Drive", stickDrive);
-    driveChooser.addOption("Joystick Drive", joyStickDrive);
+    //driveChooser.addOption("Joystick Drive", joyStickDrive);
     driveChooser.addOption("World of Tanks", worldOfTanks);
 
 
@@ -93,7 +93,7 @@ public class RobotContainer {
     //drive check1
 
     SmartDashboard.putData("Drive", driveChooser);
-    driveChooser.setDefaultOption("Joystick Drive",joyStickDrive);
+    driveChooser.setDefaultOption("Stick Drive",stickDrive);
     drive.setDefaultCommand(driveChooser.getSelected());
 
     configureButtonBindings();
@@ -109,10 +109,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driveController = new XboxController(driveControllerPort);
     altController = new XboxController(altControllerPort);
-    driveStick = new Joystick(2);
+    //driveStick = new Joystick(2);
 
     /* Alt Controller */
-    JoystickButton spinRevolver = new JoystickButton(altController, Button.kX.value);
+    JoystickButton spinRevolver = new JoystickButton(altController, Button.kY.value);
     spinRevolver.whileHeld(new SpinRevolver());
 
   }

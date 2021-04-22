@@ -73,32 +73,9 @@ public final class Constants {
     public static final double shiftPointMetersPerSecond = 1.5;
   }
 
-  public static final class WinchConstants {
-
-    //inside motor
-    public static final int leftWinchMotorPort = 6;
-    //far motor
-    public static final int rightWinchMotorPort = 7;
-    public static final double winchDefaultMotorPower = 1;
-  }
-
-  public static final class IntakeConstants {
-
-    public static final int intakeMotorPort = 2;
-
-    public static final double defaultIntakePower = 0.75;
-    public static final double defaultMotorJointPower = 0.2;
-    public static final double jointDeadzone = 0.15;
-    public static final int lowerPosition = -2300;
-    public static final int higherPosition = 0;
-
-    public static final double kP = 0.5;//0.03;
-    public static final double kD = 0.00;
-  }
-
   public static final class RevolverConstants {
     public static final int revolverMotorPort = 9;
-    public static final double revolverMotorSpeed = 0.25;
+    public static final double revolverMotorSpeed = 0.01;
   }
 
   public static final class OperatorInputConstants {
