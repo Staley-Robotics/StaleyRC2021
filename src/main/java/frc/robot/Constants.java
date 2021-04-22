@@ -89,7 +89,7 @@ public final class Constants {
     public static final int shooterRightMotorPort = 2;
     public static final int shooterLeftMotorPort = 3;
     public static final int turretMotorPort = 1;
-    public static final int shooterIntakeMotorPort = 1;
+    public static final int shooterIntakeMotorPort = 2;
 
     public static double shooterP = 0.00035;//0.0004
     public static double shooterI = 0;
@@ -98,7 +98,7 @@ public final class Constants {
 
     public static double shooterSpeed = 4000;
     public static double turretSpeed = 0.25;
-    public static double shooterIntakeSpeed = 0.3;
+    public static double shooterIntakeSpeed = -0.3;
 
     public static double maxEncounterSteps = 1204.705882;
   }

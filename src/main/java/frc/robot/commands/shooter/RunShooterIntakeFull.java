@@ -13,6 +13,7 @@ public class RunShooterIntakeFull extends SequentialCommandGroup {
     shooter = Shooter.getInstance();
 
     //Has the intake run then pause for 2 seconds, this is repeated 5 times
+    /*
     addCommands(
 
         new RunShooterIntakeTimed(),
@@ -26,7 +27,7 @@ public class RunShooterIntakeFull extends SequentialCommandGroup {
         new RunShooterIntakeTimed(),
         new WaitCommand(2.0)
     );
-
+    */
   }
 
 }

@@ -9,6 +9,7 @@ package frc.robot;
 
 import static frc.robot.Constants.OperatorInputConstants.altControllerPort;
 import static frc.robot.Constants.OperatorInputConstants.driveControllerPort;
+import static frc.robot.Constants.ShooterConstants.shooterIntakeSpeed;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -25,7 +26,9 @@ import frc.robot.commands.shooter.FindTarget;
 import frc.robot.commands.shooter.ResetTurret;
 import frc.robot.commands.shooter.RotateTurret;
 import frc.robot.commands.shooter.RunShooterFull;
+import frc.robot.commands.shooter.RunShooterIntakeTimed;
 import frc.robot.commands.shooter.ShootBallsSimple;
+import frc.robot.commands.shooter.simpleRunIntake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 
@@ -122,8 +125,8 @@ public class RobotContainer {
     driveStick = new Joystick(2);
 
     //Alternate Controller Buttons
-    JoystickButton simpleShoot = new JoystickButton(altController, Button.kA.value);
-    simpleShoot.whileHeld(new ShootBallsSimple());
+    JoystickButton runIntake = new JoystickButton(driveController, Button.kX.value);
+    runIntake.whileHeld(new simpleRunIntake());
 
     JoystickButton findTarget = new JoystickButton(altController, Button.kB.value);
     findTarget.whileHeld(new FindTarget());
