@@ -96,68 +96,14 @@ public final class Constants {
     public static final double kD = 0.00;
   }
 
-  public static final class MagazineConstants {
-
-    public static final int topMasterPort = 1;
-    public static final int pistonHardStopForwardChannel = 1;
-    public static final int pistonHardStopReverseChannel = 6;
-    public static final double defaultMagazinePower = 1;
-    public static final int magLimitSwitchPort = 9;
-  }
-
-  public static final class VisionConstants {
-    public static final double cameraDegreeError = 1.5;
-  }
-
-  public static final class MastConstants {
-
-    public static final int mastMotorPort = 5;
-    public static final double mastDefaultMotorPower = 0.5;
-    public static final double mastDeadzone = 0.05;
-    public static final int[] releaseSolenoidPorts = {0, 7};
-    public static final int potPort = 0;
-    public static final double mastP = 0.05;
-    public static final double mastI = 0;
-    public static final double mastD = 0;
-
-    public static final double mastPotTolerance = 0.02;
-    public static final double mastPotVelTolerance = 0.01;
-    public static final double extendoMastPot = 0.4;
-    public static final double retractoMastPot = 0.5;
-
+  public static final class RevolverConstants {
+    public static final int revolverMotorPort = 9;
+    public static final double revolverMotorSpeed = 0.25;
   }
 
   public static final class OperatorInputConstants {
 
     public static final int driveControllerPort = 1;
     public static final int altControllerPort = 0;
-  }
-
-  public static final class PneumaticConstants {
-
-    public static final int compressorPort = 0;
-
-    public static final int[] shifterPorts = {3, 4};
-  }
-
-  public static final class ShooterConstants {
-
-    public static final int leftShooterNeoPort = 2;
-    public static final int rightShooterNeoPort = 3;
-
-
-    public static final double flyWheelRadius = 0.0508;
-    public static final double shooterOpenLoopThreshold = 0.5;
-
-    public static final double shooterClosedLoopThreshold = 0.995;
-    public static final double shooterTightClosedLoopThreshold = 0.98;
-
-    //adjust this at comp
-    public static final double targetHeight = 202.565;
-    public static final double cameraHeight = 63.5;
-    public static final double fixedCameraAngle = 23.2;
-
-    public static double trenchShootSpeed = 29;
-    public static double autoLineShootSpeed = 30;
   }
 }

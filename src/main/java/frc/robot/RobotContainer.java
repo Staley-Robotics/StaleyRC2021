@@ -7,13 +7,8 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.IntakeConstants.defaultIntakePower;
-import static frc.robot.Constants.MagazineConstants.defaultMagazinePower;
 import static frc.robot.Constants.OperatorInputConstants.altControllerPort;
 import static frc.robot.Constants.OperatorInputConstants.driveControllerPort;
-import static frc.robot.Constants.ShooterConstants.autoLineShootSpeed;
-import static frc.robot.Constants.ShooterConstants.trenchShootSpeed;
-import static frc.robot.Constants.WinchConstants.winchDefaultMotorPower;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -23,14 +18,10 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.vision.VisionYawAlign;
+import frc.robot.commands.revolver.SpinRevolver;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Vision;
-import frc.robot.util.DPadButton;
-import frc.robot.util.DPadButton.Direction;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -45,7 +36,6 @@ public class RobotContainer {
   private Joystick driveStick;
 
   private final DriveTrain drive;
-  private final Vision vision;
 
   private SendableChooser<Command> autoChooser;
   private SendableChooser<Command> driveChooser;
@@ -57,7 +47,6 @@ public class RobotContainer {
   public RobotContainer() {
 
     drive = DriveTrain.getInstance();
-    vision = Vision.getInstance();
 
     autoChooser = new SendableChooser<>();
     driveChooser = new SendableChooser<>();
@@ -122,10 +111,9 @@ public class RobotContainer {
     altController = new XboxController(altControllerPort);
     driveStick = new Joystick(2);
 
-    JoystickButton lineUpShot = new JoystickButton(driveController, Button.kX.value);
-    lineUpShot.whileHeld(new VisionYawAlign());
-
     /* Alt Controller */
+    JoystickButton spinRevolver = new JoystickButton(altController, Button.kX.value);
+    spinRevolver.whileHeld(new SpinRevolver());
 
   }
 
