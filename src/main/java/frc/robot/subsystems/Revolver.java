@@ -4,6 +4,7 @@ import static frc.robot.Constants.RevolverConstants.revolverMotorPort;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Revolver extends SubsystemBase {
@@ -13,7 +14,7 @@ public class Revolver extends SubsystemBase {
   private VictorSPX revolverMotor;
 
   private Revolver(){
-    revolverMotor = new VictorSPX(revolverMotorPort);
+    revolverMotor = new WPI_VictorSPX(revolverMotorPort);
   }
 
   public static Revolver getInstance(){

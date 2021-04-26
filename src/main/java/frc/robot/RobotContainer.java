@@ -112,7 +112,7 @@ public class RobotContainer {
     //driveStick = new Joystick(2);
 
     /* Alt Controller */
-    JoystickButton spinRevolver = new JoystickButton(altController, Button.kY.value);
+    JoystickButton spinRevolver = new JoystickButton(altController, Button.kA.value);
     spinRevolver.whileHeld(new SpinRevolver());
 
   }

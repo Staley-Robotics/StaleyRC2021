@@ -74,8 +74,8 @@ public final class Constants {
   }
 
   public static final class RevolverConstants {
-    public static final int revolverMotorPort = 9;
-    public static final double revolverMotorSpeed = 0.01;
+    public static final int revolverMotorPort = 6;
+    public static final double revolverMotorSpeed = -0.3;
   }
 
   public static final class OperatorInputConstants {
