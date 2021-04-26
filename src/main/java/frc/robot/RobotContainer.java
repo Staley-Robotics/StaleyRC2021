@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.revolver.SpinRevolver;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,7 +36,6 @@ public class RobotContainer {
   private Joystick driveStick;
 
   private final DriveTrain drive;
-  private final Vision vision;
 
   private SendableChooser<Command> autoChooser;
   private SendableChooser<Command> driveChooser;
@@ -48,7 +47,6 @@ public class RobotContainer {
   public RobotContainer() {
 
     drive = DriveTrain.getInstance();
-    vision = Vision.getInstance();
 
     autoChooser = new SendableChooser<>();
     driveChooser = new SendableChooser<>();
@@ -67,14 +65,14 @@ public class RobotContainer {
                 driveController.getY(Hand.kLeft),
                 driveController.getX(Hand.kLeft)),
         drive);
-
+    /*
     Command joyStickDrive = new RunCommand(
         () ->
             drive.worldOfStick(
                 driveStick.getY(Hand.kRight),
                 driveStick.getX(Hand.kRight)
             ), drive);
-
+    */
     Command worldOfTanks = new RunCommand(
         () ->
             drive.worldOfTanksDrive(
@@ -85,7 +83,7 @@ public class RobotContainer {
 
     driveChooser.addOption("Tank Drive", tankCommand);
     driveChooser.addOption("Arcade Drive", stickDrive);
-    driveChooser.addOption("Joystick Drive", joyStickDrive);
+    //driveChooser.addOption("Joystick Drive", joyStickDrive);
     driveChooser.addOption("World of Tanks", worldOfTanks);
 
 
@@ -95,7 +93,7 @@ public class RobotContainer {
     //drive check1
 
     SmartDashboard.putData("Drive", driveChooser);
-    driveChooser.setDefaultOption("Joystick Drive",joyStickDrive);
+    driveChooser.setDefaultOption("Stick Drive",stickDrive);
     drive.setDefaultCommand(driveChooser.getSelected());
 
     configureButtonBindings();
@@ -111,9 +109,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driveController = new XboxController(driveControllerPort);
     altController = new XboxController(altControllerPort);
-    driveStick = new Joystick(2);
+    //driveStick = new Joystick(2);
 
     /* Alt Controller */
+    JoystickButton spinRevolver = new JoystickButton(altController, Button.kA.value);
+    spinRevolver.whileHeld(new SpinRevolver());
 
   }
 

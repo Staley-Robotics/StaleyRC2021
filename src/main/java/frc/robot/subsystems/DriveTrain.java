@@ -21,23 +21,16 @@ import static frc.robot.Constants.DriveConstants.rMotorMasterPort;
 import static frc.robot.Constants.DriveConstants.ramseteB;
 import static frc.robot.Constants.DriveConstants.ramseteZ;
 import static frc.robot.Constants.DriveConstants.rotateDeadzone;
-import static frc.robot.Constants.DriveConstants.shiftPointMetersPerSecond;
 import static frc.robot.Constants.DriveConstants.speedModifier;
 import static frc.robot.Constants.DriveConstants.turnSpeedModifier;
 import static frc.robot.Constants.DriveConstants.wheelCircumferenceMeters;
-import static frc.robot.Constants.PneumaticConstants.shifterPorts;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -76,8 +69,6 @@ public class DriveTrain extends SubsystemBase {
   private WPI_TalonFX leftFollower;
 
   private DifferentialDrive drive;
-
-  private double targetAngle;
 
   private DriveTrain() {
     try {
@@ -191,7 +182,6 @@ public class DriveTrain extends SubsystemBase {
   public void stopDrive() {
     drive.arcadeDrive(0, 0);
   }
-
 
   /* Encoder */
 
