@@ -4,24 +4,25 @@ import static frc.robot.Constants.ShooterConstants.shooterIntakeSpeed;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterIntake;
 
 public class simpleRunIntake extends CommandBase {
-  private Shooter shooter;
+  private ShooterIntake shooterIntake;
 
   public simpleRunIntake(){
-    shooter = Shooter.getInstance();
-    addRequirements(shooter);
+    shooterIntake = ShooterIntake.getInstance();
+    addRequirements(shooterIntake);
   }
 
   @Override
   public void initialize(){
-    shooter.runShooterIntake(shooterIntakeSpeed);
+    shooterIntake.runShooterIntake(shooterIntakeSpeed);
 
   }
 
   @Override
   public void execute() {
-    shooter.runShooterIntake(shooterIntakeSpeed);
+    shooterIntake.runShooterIntake(shooterIntakeSpeed);
   }
 
   @Override
@@ -31,7 +32,7 @@ public class simpleRunIntake extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    shooter.runShooterIntake(0.00);
+    shooterIntake.runShooterIntake(0.00);
   }
 
 }

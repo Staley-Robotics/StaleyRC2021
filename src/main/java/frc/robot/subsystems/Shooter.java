@@ -33,7 +33,6 @@ public class Shooter extends SubsystemBase{
 
   private CANSparkMax shooterRightMotor;
   private CANSparkMax shooterLeftMotor;
-  private VictorSP intakeMotor;
 
   private CANEncoder shooterEncoder;
   private CANPIDController shooterPID;
@@ -45,7 +44,6 @@ public class Shooter extends SubsystemBase{
       shooterRightMotor = new CANSparkMax(shooterRightMotorPort, MotorType.kBrushless);
       shooterLeftMotor = new CANSparkMax(shooterLeftMotorPort, MotorType.kBrushless);
       turretMotor = new WPI_TalonSRX(turretMotorPort);
-      intakeMotor = new VictorSP(shooterIntakeMotorPort);
     } catch (RuntimeException ex) {
       DriverStation
           .reportError("Error Instantiating Shooter Motor Controllers: " + ex.getMessage(), true);
@@ -104,10 +102,6 @@ public class Shooter extends SubsystemBase{
 
   public void spinTurret(double speed){
     turretMotor.set(speed);
-  }
-
-  public void runShooterIntake(double speed){
-    intakeMotor.set(speed);
   }
 
   public boolean checkPosition(double encounterMark){

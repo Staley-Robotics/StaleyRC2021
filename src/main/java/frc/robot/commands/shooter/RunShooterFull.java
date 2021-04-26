@@ -14,8 +14,8 @@ public class RunShooterFull extends ParallelRaceGroup {
     //Takes the shooter and intake (with pauses) commands and runs them at the same time
     addCommands(
 
-        //new ShootBallsSimple(),
-        new RunShooterIntakeFull()
+        new ShootBallsSimple(),
+        new simpleRunIntake()
 
 
     );

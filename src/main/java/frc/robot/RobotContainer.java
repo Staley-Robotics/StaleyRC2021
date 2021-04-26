@@ -100,6 +100,12 @@ public class RobotContainer {
     driveChooser.addOption("World of Tanks", worldOfTanks);
     */
 
+    shooter.setDefaultCommand(
+        new RunCommand(
+            ()-> shooter.spinTurret((altController.getX(Hand.kLeft)/4)), shooter
+        )
+    );
+
     SmartDashboard.putData("Auto", autoChooser);
     //All subsystems will have checks that should be checked before going out.
     //check 1: default commands have been set/not set correctly
@@ -125,14 +131,6 @@ public class RobotContainer {
     driveStick = new Joystick(2);
 
     //Alternate Controller Buttons
-    JoystickButton runIntake = new JoystickButton(driveController, Button.kX.value);
-    runIntake.whileHeld(new simpleRunIntake());
-
-    JoystickButton findTarget = new JoystickButton(altController, Button.kB.value);
-    findTarget.whileHeld(new FindTarget());
-
-    JoystickButton resetTurret = new JoystickButton(altController, Button.kY.value);
-    resetTurret.whenPressed(new ResetTurret());
 
     JoystickButton runShooterFull = new JoystickButton(altController, Button.kX.value);
     runShooterFull.whenHeld(new RunShooterFull());
