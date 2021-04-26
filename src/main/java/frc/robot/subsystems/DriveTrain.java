@@ -211,9 +211,6 @@ public class DriveTrain extends SubsystemBase {
     System.out.println("Encoders have been zeroed");
   }
 
-
-
-
   public void runDriveTrain(double power) {
     rightMaster.set(power);
     leftMaster.set(power);
