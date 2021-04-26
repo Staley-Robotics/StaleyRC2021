@@ -80,7 +80,26 @@ public final class Constants {
 
   public static final class OperatorInputConstants {
 
-    public static final int driveControllerPort = 1;
-    public static final int altControllerPort = 0;
+    public static final int driveControllerPort = 0;
+    public static final int altControllerPort = 1;
+  }
+
+  public static final class ShooterConstants {
+
+    public static final int shooterRightMotorPort = 2;
+    public static final int shooterLeftMotorPort = 3;
+    public static final int turretMotorPort = 5;
+    public static final int shooterIntakeMotorPort = 2;
+
+    public static double shooterP = 0.00035;//0.0004
+    public static double shooterI = 0;
+    public static double shooterD = 0.001;
+    public static double shooterF = 0.000175;//0.00015
+
+    public static double shooterSpeed = 4000;
+    public static double turretSpeed = 0.25;
+    public static double shooterIntakeSpeed = -0.3;
+
+    public static double maxEncounterSteps = 1204.705882;
   }
 }

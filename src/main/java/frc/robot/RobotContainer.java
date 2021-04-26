@@ -9,6 +9,7 @@ package frc.robot;
 
 import static frc.robot.Constants.OperatorInputConstants.altControllerPort;
 import static frc.robot.Constants.OperatorInputConstants.driveControllerPort;
+import static frc.robot.Constants.ShooterConstants.shooterIntakeSpeed;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -22,6 +23,16 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.revolver.SpinRevolver;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.shooter.CenterTurret;
+import frc.robot.commands.shooter.FindTarget;
+import frc.robot.commands.shooter.ResetTurret;
+import frc.robot.commands.shooter.RotateTurret;
+import frc.robot.commands.shooter.RunShooterFull;
+import frc.robot.commands.shooter.RunShooterIntakeTimed;
+import frc.robot.commands.shooter.ShootBallsSimple;
+import frc.robot.commands.shooter.simpleRunIntake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,6 +47,8 @@ public class RobotContainer {
   private Joystick driveStick;
 
   private final DriveTrain drive;
+  private final Vision vision;
+  private final Shooter shooter;
 
   private SendableChooser<Command> autoChooser;
   private SendableChooser<Command> driveChooser;
@@ -47,6 +60,8 @@ public class RobotContainer {
   public RobotContainer() {
 
     drive = DriveTrain.getInstance();
+    vision = Vision.getInstance();
+    shooter = Shooter.getInstance();
 
     autoChooser = new SendableChooser<>();
     driveChooser = new SendableChooser<>();
@@ -87,6 +102,12 @@ public class RobotContainer {
     driveChooser.addOption("World of Tanks", worldOfTanks);
 
 
+    shooter.setDefaultCommand(
+        new RunCommand(
+            ()-> shooter.spinTurret((altController.getX(Hand.kLeft)/4)), shooter
+        )
+    );
+
     SmartDashboard.putData("Auto", autoChooser);
     //All subsystems will have checks that should be checked before going out.
     //check 1: default commands have been set/not set correctly
@@ -114,6 +135,9 @@ public class RobotContainer {
     /* Alt Controller */
     JoystickButton spinRevolver = new JoystickButton(altController, Button.kA.value);
     spinRevolver.whileHeld(new SpinRevolver());
+
+    JoystickButton runShooterFull = new JoystickButton(altController, Button.kX.value);
+    runShooterFull.whenHeld(new RunShooterFull());
 
   }
 
