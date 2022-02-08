@@ -19,10 +19,10 @@ public class ColorMatcher {
 
   private final ColorMatch colorMatcher = new ColorMatch();
 
-  public static final Color kBlueTarget = ColorMatch.makeColor(0.136, 0.412, 0.450);
-  public static final Color kGreenTarget = ColorMatch.makeColor(0.196, 0.557, 0.246);
-  public static final Color kRedTarget = ColorMatch.makeColor(0.475, 0.371, 0.153);
-  public static final Color kYellowTarget = ColorMatch.makeColor(0.293, 0.561, 0.144);
+  public static final Color kBlueTarget = new Color(0.136, 0.412, 0.450);
+  public static final Color kGreenTarget = new Color(0.196, 0.557, 0.246);
+  public static final Color kRedTarget = new Color(0.475, 0.371, 0.153);
+  public static final Color kYellowTarget = new Color(0.293, 0.561, 0.144);
 
   private ColorMatchResult matchedResult = new ColorMatchResult(Color.kBlack, 0);
 

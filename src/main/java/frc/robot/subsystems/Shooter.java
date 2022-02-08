@@ -22,7 +22,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase{
@@ -96,7 +96,7 @@ public class Shooter extends SubsystemBase{
     shooterRightMotor.set(0);
   }
 
-  public int getTurretMotorPosition(){
+  public double getTurretMotorPosition(){
     return turretMotor.getSelectedSensorPosition();
   }
 

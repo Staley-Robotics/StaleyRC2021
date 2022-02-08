@@ -12,7 +12,6 @@ import static frc.robot.Constants.OperatorInputConstants.driveControllerPort;
 import static frc.robot.Constants.ShooterConstants.shooterIntakeSpeed;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -69,31 +68,31 @@ public class RobotContainer {
     Command tankCommand = new RunCommand(
         () ->
             drive.tankerMan(
-                -driveController.getY(Hand.kLeft),
-                -driveController.getY(Hand.kRight)
+                -driveController.getLeftY(),
+                -driveController.getRightY()
             ), drive
     );
 
     Command stickDrive = new RunCommand(
         () ->
             drive.worldOfStick(
-                driveController.getY(Hand.kLeft),
-                driveController.getX(Hand.kLeft)),
+                driveController.getLeftY(),
+                driveController.getLeftX()),
         drive);
     /*
     Command joyStickDrive = new RunCommand(
         () ->
             drive.worldOfStick(
-                driveStick.getY(Hand.kRight),
-                driveStick.getX(Hand.kRight)
+                driveStick.getRightY(),
+                driveStick.getRightX()
             ), drive);
     */
     Command worldOfTanks = new RunCommand(
         () ->
             drive.worldOfTanksDrive(
-                driveController.getTriggerAxis(GenericHID.Hand.kRight),
-                driveController.getTriggerAxis(GenericHID.Hand.kLeft),
-                driveController.getX(GenericHID.Hand.kLeft)),
+                driveController.getRightTriggerAxis(),
+                driveController.getLeftTriggerAxis(),
+                driveController.getLeftX()),
         drive);
 
     driveChooser.addOption("Tank Drive", tankCommand);
@@ -104,7 +103,7 @@ public class RobotContainer {
 
     shooter.setDefaultCommand(
         new RunCommand(
-            ()-> shooter.spinTurret((altController.getX(Hand.kLeft)/4)), shooter
+            ()-> shooter.spinTurret((altController.getLeftX()/4)), shooter
         )
     );
 

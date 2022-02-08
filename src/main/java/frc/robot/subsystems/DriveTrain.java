@@ -33,14 +33,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -110,10 +111,10 @@ public class DriveTrain extends SubsystemBase {
 
     leftFollower.follow(leftMaster);
 
+    rightMaster.setInverted(true);
     drive = new DifferentialDrive(leftMaster, rightMaster);
     drive.setSafetyEnabled(false);
-    drive.setRightSideInverted(false);
-
+    
     zeroEncoder();
   }
 
@@ -185,20 +186,20 @@ public class DriveTrain extends SubsystemBase {
 
   /* Encoder */
 
-  public int getLeftEncoderPosition() {
+  public double getLeftEncoderPosition() {
     return leftMaster.getSelectedSensorPosition(0);
   }
 
-  public int getRightEncoderPosition() {
+  public double getRightEncoderPosition() {
     return rightMaster.getSelectedSensorPosition(0);
   }
 
-  public int getLeftEncoderVelocity() {
+  public double getLeftEncoderVelocity() {
     return leftMaster.getSelectedSensorVelocity();
 
   }
 
-  public int getRightEncoderVelocity() {
+  public double getRightEncoderVelocity() {
     return rightMaster.getSelectedSensorVelocity();
   }
 
